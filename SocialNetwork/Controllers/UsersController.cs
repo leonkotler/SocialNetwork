@@ -16,46 +16,67 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
-        // GET: Users
         public ActionResult Index()
         {
             return View(db.Users.ToList());
         }
 
         // GET: Users
-        public ActionResult Home()
+        public ActionResult Home(User loggedUser)
         {
-            return View(db.Posts.ToList());
+            if (Session["UserID"] != null)
+            {
+                var userPosts = db.Posts.Where(p => p.UserID == loggedUser.UserID).ToList();
+                return View(userPosts);
+            }
+            else return RedirectToAction("Login");
         }
+
+        // GET: Users/Register
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        // GET: Users/Login
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Login(User user)
         {
-            
-                if (IsValid(user.Email, user.Password))
-                {
-                    FormsAuthentication.SetAuthCookie(user.Email, true);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Login data is incorrect!");
-                }
-            return View(user);
+            var loggedUser = db.Users.Where(u => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
+            if (loggedUser != null)
+            {
+                Session["UserID"] = loggedUser.UserID.ToString();
+                Session["Username"] = loggedUser.Email.ToString();
+                return RedirectToAction("Home", loggedUser);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Wrong credentials");
+            }
+            return View();
         }
 
-        private bool IsValid(string email, string password)
+
+        [HttpPost]
+        public ActionResult Register(User account)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var user = db.Users.Where(u => u.Email == email && u.Password == password);
-                return true;
+                db.Users.Add(account);
+                db.SaveChanges();
             }
-            catch (ArgumentNullException)
-            {
-                return false;   
-            }
+            ModelState.Clear();
+            ViewBag.Message = account.FirstName + " " + account.LastName + "successfuly registered!";
+
+            return View();
         }
 
+       
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
@@ -77,23 +98,6 @@ namespace SocialNetwork.Controllers
             return View();
         }
 
-        // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,FirstName,LastName,Gender,Email,BirthDate")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Users.Add(user);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(user);
-        }
-
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -110,8 +114,6 @@ namespace SocialNetwork.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserID,FirstName,LastName,Gender,Email,BirthDate")] User user)

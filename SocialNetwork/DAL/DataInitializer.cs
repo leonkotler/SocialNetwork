@@ -10,10 +10,9 @@ namespace SocialNetwork.DAL
 {
     public class DataInitializer : DropCreateDatabaseAlways<NetworkContext>
     {
-
         protected override void Seed(NetworkContext context)
         {
-            User user1 = new User { FirstName = "Eliahu", LastName = "Khalastchi", Gender = MyGender.Male, BirthDate = DateTime.Parse("2017-08-09"), Email = "eli@colman.co.il" };
+            User user1 = new User { FirstName = "Eliahu", LastName = "Khalastchiii", Gender = MyGender.Male, BirthDate = DateTime.Parse("2017-08-09"), Email = "eli@colman.co.il" };
             User user2 = new User { FirstName = "Oren", LastName = "Kapach", Gender = MyGender.Male, BirthDate = DateTime.Parse("2015-08-09"), Email = "oren@colman.com" };
             User user3 = new User { FirstName = "Nezer", LastName = "Zaidenberg", Gender = MyGender.Female, BirthDate = DateTime.Parse("2016-08-09"), Email = "nezer@colman.com" };
             User user4 = new User { FirstName = "Galit", LastName = "Haim", Gender = MyGender.Female, BirthDate = DateTime.Parse("2014-08-09"), Email = "galit@colman.com" };

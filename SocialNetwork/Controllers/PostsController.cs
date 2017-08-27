@@ -47,13 +47,17 @@ namespace SocialNetwork.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostID,UserID,Title,Content,PostDate,Likes")] Post post)
+        public ActionResult Create([Bind(Include = "Title,Content")] Post post)
         {
+
             if (ModelState.IsValid)
             {
+                User user = db.Users.Find(Convert.ToInt32(Session["UserID"]));
+                post.User = user;
+                post.PostDate = DateTime.Now;
                 db.Posts.Add(post);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Home", "Users");
             }
 
             return View(post);

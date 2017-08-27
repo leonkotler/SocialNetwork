@@ -18,7 +18,20 @@ namespace SocialNetwork.Controllers
         // GET: Groups
         public ActionResult Index()
         {
-            return View(db.Groups.ToList());
+            int userId = Convert.ToInt32(Session["UserID"]);
+
+            User user = db.Users.Find(userId);
+            var groups = user.Groups.ToList();
+
+            ViewBag.User = user;
+
+            return View(groups);
+        }
+
+        public ActionResult ViewGroup(int? groupId)
+        {
+            Group group = db.Groups.Find(groupId);
+            return View(group);
         }
 
         // GET: Groups/Details/5

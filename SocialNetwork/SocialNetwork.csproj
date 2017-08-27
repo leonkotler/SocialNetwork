@@ -146,7 +146,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config" />
-    <Content Include="Views\Comments\Create.cshtml" />
     <Content Include="Views\Comments\Delete.cshtml" />
     <Content Include="Views\Comments\Details.cshtml" />
     <Content Include="Views\Comments\Edit.cshtml" />
@@ -189,11 +188,12 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
-    <Content Include="Views\Users\Home.cshtml" />
-    <Content Include="Views\Shared\_FeedLayout.cshtml" />
-    <Content Include="Views\Shared\_GroupLayout.cshtml" />
-    <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Home.cshtml" />
+    <Content Include="Views\Users\Login.cshtml" />
+    <Content Include="Views\Comments\Create.cshtml" />
+    <Content Include="Views\Users\UserProfile.cshtml" />
+    <Content Include="Views\Groups\ViewGroup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

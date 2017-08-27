@@ -36,6 +36,7 @@ namespace SocialNetwork.Models
         [Display(Name = "Date of birth")]
         public DateTime BirthDate { get; set; }
 
-        public ICollection<Group> Groups { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Group> Groups { get; set; }
     }
 }

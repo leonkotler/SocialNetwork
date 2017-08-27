@@ -24,10 +24,10 @@ namespace SocialNetwork.DAL
             users.Add(user3);
             users.Add(user4);
 
-            Post post1 = new Post { PostID = 1, UserID = user1.UserID, Content = "Post 1 content", Likes = 5, PostDate = DateTime.Parse("2011-08-09"), Title = "Post 1 title" };
-            Post post2 = new Post { PostID = 2, UserID = user2.UserID, Content = "Post 2 content", Likes = 6, PostDate = DateTime.Parse("2012-08-09"), Title = "Post 2 title" };
-            Post post3 = new Post { PostID = 3, UserID = user3.UserID, Content = "Post 3 content", Likes = 7, PostDate = DateTime.Parse("2013-08-09"), Title = "Post 3 title" };
-            Post post4 = new Post { PostID = 4, UserID = user4.UserID, Content = "Post 4 content", Likes = 8, PostDate = DateTime.Parse("2014-08-09"), Title = "Post 4 title" };
+            Post post1 = new Post { PostID = 1, User = user1, Content = "Post 1 content", Likes = 5, PostDate = DateTime.Parse("2011-08-09"), Title = "Post 1 title" };
+            Post post2 = new Post { PostID = 2, User = user2, Content = "Post 2 content", Likes = 6, PostDate = DateTime.Parse("2012-08-09"), Title = "Post 2 title" };
+            Post post3 = new Post { PostID = 3, User = user3, Content = "Post 3 content", Likes = 7, PostDate = DateTime.Parse("2013-08-09"), Title = "Post 3 title" };
+            Post post4 = new Post { PostID = 4, User = user4, Content = "Post 4 content", Likes = 8, PostDate = DateTime.Parse("2014-08-09"), Title = "Post 4 title" };
 
             var posts = new List<Post>();
             posts.Add(post1);
@@ -47,18 +47,19 @@ namespace SocialNetwork.DAL
 
             var comments = new List<Comment>
                 {
-                    new Comment {CommentID =1, UserID=user1.UserID, Content="Comment 1 contents", PostID=1, Title="Comment 1 title",Likes=1 },
-                    new Comment {CommentID =2, UserID=user2.UserID, Content="Comment 2 contents", PostID=2, Title="Comment 2 title",Likes=2 },
-                    new Comment {CommentID =3, UserID=user3.UserID, Content="Comment 3 contents", PostID=3, Title="Comment 3 title",Likes=3 },
-                    new Comment {CommentID =4, UserID=user4.UserID, Content="Comment 4 contents", PostID=4, Title="Comment 4 title",Likes=4 }
+                    new Comment {CommentID =1, User = user1, Content="Comment 1 contents", Post=post1, Likes=1 },
+                    new Comment {CommentID =5, User = user1, Content="Comment 1 contentz", Post=post1, Likes=9 },
+                    new Comment {CommentID =2, User = user2, Content="Comment 2 contents", Post=post2, Likes=2 },
+                    new Comment {CommentID =3, User = user3, Content="Comment 3 contents", Post=post3, Likes=3 },
+                    new Comment {CommentID =4, User = user4, Content="Comment 4 contents", Post=post4, Likes=4 }
                 };
 
             var groups = new List<Group>
                 {
-                    new Group {GroupID = 1, UserID = user1.UserID, Title="Group 1 title", Likes=600, CreatedDate=DateTime.Parse("2014-08-09"), Posts=posts1, Members=users },
-                    new Group {GroupID = 2, UserID = user2.UserID, Title="Group 2 title", Likes=100, CreatedDate=DateTime.Parse("2014-08-09"), Posts=posts2, Members=users  },
-                    new Group {GroupID = 3, UserID = user3.UserID, Title="Group 3 title", Likes=2, CreatedDate=DateTime.Parse("2014-08-09"),  Posts=posts3, Members=users  },
-                    new Group {GroupID = 4, UserID = user4.UserID, Title="Group 4 title", Likes=1, CreatedDate=DateTime.Parse("2014-08-09"),  Posts=posts4, Members=users  }
+                    new Group {GroupID = 1, AdminId = user1.UserID, Title="Group 1 title", Likes=600, CreatedDate=DateTime.Parse("2014-08-09"), Posts=posts1, Members=users },
+                    new Group {GroupID = 2, AdminId = user2.UserID, Title="Group 2 title", Likes=100, CreatedDate=DateTime.Parse("2014-08-09"), Posts=posts2, Members=users  },
+                    new Group {GroupID = 3, AdminId = user3.UserID, Title="Group 3 title", Likes=2, CreatedDate=DateTime.Parse("2014-08-09"),  Posts=posts3, Members=users  },
+                    new Group {GroupID = 4, AdminId = user4.UserID, Title="Group 4 title", Likes=1, CreatedDate=DateTime.Parse("2014-08-09"),  Posts=posts4, Members=users  }
                 };
 
             users.ForEach(u => context.Users.Add(u));

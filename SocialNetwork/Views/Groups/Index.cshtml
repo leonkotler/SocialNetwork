@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<SocialNetwork.Models.Group>
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    SocialNetwork.Models.User admin = ViewBag.User;
 }
 
 <!DOCTYPE html>
@@ -12,48 +13,26 @@
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
     <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Likes)
-            </th>
-            <th></th>
-        </tr>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Likes)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.GroupID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.GroupID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.GroupID })
-            </td>
-        </tr>
-    }
-    
+        @foreach (var group in Model)
+        {
+            <tr>
+                <td>
+                    Admin: @admin.FirstName @Html.Raw(" ") @admin.LastName
+                    <br /><br />
+                    <strong style="font-size:200%">
+                        <input type="button" value="@group.Title" onclick="@("window.location.href='" +
+                            @Url.Action("ViewGroup", "Groups", new { groupId = group.GroupID }) + "'");" />
+                    </strong>
+                    <br />
+                    <text id="@group.Likes">@group.Likes</text> Likes |
+                    <a onclick="addGroupLike(@group.GroupID)" class="like">Like</a>
+                </td>
+            </tr>
+
+
+        }
     </table>
+
 </body>
 </html>

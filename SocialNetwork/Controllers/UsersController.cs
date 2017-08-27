@@ -21,15 +21,25 @@ namespace SocialNetwork.Controllers
             return View(db.Users.ToList());
         }
 
-        // GET: Users
+        // GET: Users/Home
         public ActionResult Home(User loggedUser)
         {
             if (Session["UserID"] != null)
-            {
-                var userPosts = db.Posts.Where(p => p.UserID == loggedUser.UserID).ToList();
+            { 
+                var userPosts = db.Posts.OrderByDescending(p => p.Likes).ToList();
                 return View(userPosts);
             }
             else return RedirectToAction("Login");
+        }
+
+        public ActionResult UserProfile()
+        {
+            int userId = Convert.ToInt32(Session["UserID"]);
+            var userPosts = db.Posts.Where(p => p.UserId == userId).OrderByDescending(p => p.Likes).ToList();
+            if (userPosts != null)
+                return View(userPosts);
+
+            else return View();
         }
 
         // GET: Users/Register
@@ -44,6 +54,12 @@ namespace SocialNetwork.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Home");
+        }
+
         [HttpPost]
         public ActionResult Login(User user)
         {
@@ -52,6 +68,7 @@ namespace SocialNetwork.Controllers
             {
                 Session["UserID"] = loggedUser.UserID.ToString();
                 Session["Username"] = loggedUser.Email.ToString();
+                Session["Fullname"] = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
                 return RedirectToAction("Home", loggedUser);
             }
             else
@@ -65,6 +82,7 @@ namespace SocialNetwork.Controllers
         [HttpPost]
         public ActionResult Register(User account)
         {
+            // TODO: check what happens on duplicate email
             if (ModelState.IsValid)
             {
                 db.Users.Add(account);
@@ -76,6 +94,21 @@ namespace SocialNetwork.Controllers
             return View();
         }
 
+        [HttpPost]
+        public int AddLike(int? postId)
+        {
+          
+            Post post = db.Posts.Find(postId);
+            post.Likes++;
+
+            db.Entry(post).State = post.PostID == 0 ?
+                                   EntityState.Added :
+                                   EntityState.Modified;
+
+            db.SaveChanges();
+            return post.Likes;
+
+        }
        
         // GET: Users/Details/5
         public ActionResult Details(int? id)
@@ -90,12 +123,6 @@ namespace SocialNetwork.Controllers
                 return HttpNotFound();
             }
             return View(user);
-        }
-
-        // GET: Users/Create
-        public ActionResult Create()
-        {
-            return View();
         }
 
         // GET: Users/Edit/5
@@ -116,13 +143,13 @@ namespace SocialNetwork.Controllers
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,FirstName,LastName,Gender,Email,BirthDate")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Gender,Email,BirthDate")] User user)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Logout","Users");
             }
             return View(user);
         }

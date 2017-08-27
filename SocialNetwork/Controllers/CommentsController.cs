@@ -15,45 +15,29 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
-        // GET: Comments
-        public ActionResult Index()
-        {
-            return View(db.Comments.ToList());
-        }
-
-        // GET: Comments/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
-        }
-
+ 
         // GET: Comments/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create(int? postId)
+        {    
+            ViewBag.postId = postId;
             return View();
         }
 
-        // POST: Comments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Comments/Create      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CommentID,PostID,UserID,Title,Content,Likes")] Comment comment)
+        public ActionResult Create ([Bind(Include = "Content,PostId")] Comment comment)
         {
+            User user = db.Users.Find(Convert.ToInt32(Session["UserID"]));
+            Post post = db.Posts.Find(comment.PostId);
+
             if (ModelState.IsValid)
             {
+                comment.User = user;
+                comment.Post = post;
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Home", "Users");
             }
 
             return View(comment);

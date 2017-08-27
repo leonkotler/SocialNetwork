@@ -6,18 +6,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="~/Content/assets/css/main.css" />
+    <script src="~/Content/assets/js/jquery.min.js"></script>
 </head>
 <body id="top">
 
     <!-- Header -->
     <header id="header">
         <div class="inner">
-            <a href="#" class="image avatar"><img src="~/Content/images/avatar.jpg" alt="" /></a>
-            <h1>
-                <strong>I am Strata</strong>, a super simple<br />
-                responsive site template freebie<br />
-                crafted by <a href="http://html5up.net">HTML5 UP</a>.
-            </h1>
+            @{
+                if (Session["UserId"] == null)
+                {
+                    <h1>Welcome to Social Network</h1>
+                    <h2>Please login to continue</h2>
+                }
+                else
+                {
+                    <a href="#" class="image avatar"><img src="~/Content/images/avatar.jpg" alt="" /></a>
+                    <h1>
+                        <strong style="font-size: 200%">@Session["Fullname"]</strong>
+
+                        <br /><br />
+                        <a onclick="@("window.location.href='" + @Url.Action("Home", "Users") + "'");">Home</a><br />
+                        <a onclick="@("window.location.href='" + @Url.Action("UserProfile", "Users") + "'");">Profile</a><br />
+                        <a onclick="@("window.location.href='" + @Url.Action("Index", "Groups") + "'");">Groups</a><br />
+                        <a onclick="@("window.location.href='" + @Url.Action("Logout", "Users") + "'");">Logout</a><br />
+                    </h1>
+                }
+            }
         </div>
     </header>
 
@@ -26,43 +41,59 @@
 
         <!-- One -->
         <section id="one">
-            <header class="major">
-                <h2>
-                    Ipsum lorem dolor aliquam ante commodo<br />
-                    magna sed accumsan arcu neque.
-                </h2>
-            </header>
-            <p>Accumsan orci faucibus id eu lorem semper. Eu ac iaculis ac nunc nisi lorem vulputate lorem neque cubilia ac in adipiscing in curae lobortis tortor primis integer massa adipiscing id nisi accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque cubilia.</p>
-            <ul class="actions">
-                <li><a href="#" class="button">Learn More</a></li>
-            </ul>
+            @RenderSection("Header", required: false)
         </section>
         <!-- Two -->
 
         <section id="two">
-            <h2>Posts</h2>
             <div class="row">
                 @RenderBody()
             </div>
-            <ul class="actions">
-                <li><a href="#" class="button">Back to News Feed</a></li>
-            </ul>
+
         </section>
+
+        <!-- Three -->
+        @{
+            if (Session["UserId"] != null)
+            {
+                <section id="three">
+                    <h2>Search</h2>
+                    <div class="row">
+                        <div class="8u 12u$(small)">
+                            <form method="post" action="#">
+                                <div class="row uniform 50%">
+                                    <div class="6u 12u$(xsmall)"><input type="text" name="Insert keywords" id="search" placeholder="Search" /></div>
+                                </div>
+                            </form>
+                            <ul class="actions">
+                                <li><input type="submit" value="Search" /></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            }
+        }
+        
     </div>
 
     <!-- Footer -->
     <footer id="footer">
         <div class="inner">
-            <ul class="icons">
-                <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
-                <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-                <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
-            </ul>
-            <ul class="copyright">
-                <li>&copy; Untitled</li>
-                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-            </ul>
+            @{
+                if (Session["UserId"] != null)
+                {
+                    <ul class="icons">
+                        <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+                        <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+                        <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+                    </ul>
+
+                }
+                <ul class="copyright">
+                    <li>&copy; SocialNetwork</li>
+                </ul>
+            }
         </div>
     </footer>
 
@@ -75,3 +106,27 @@
 
 </body>
 </html>
+<!-- 'Like' button scripts -->
+<script>
+    $(function () {
+        $('.like').on('click', function () {
+            $(this).replaceWith('Liked')
+        })
+    });
+
+</script>
+
+<script>
+    function addLike(postId) {
+        var id = postId;
+        $.ajax({
+            type: "POST",
+            url: "/Users/AddLike",
+            data: { postId: id },
+            success: function (result) {
+                $('#' + postId).replaceWith(result);
+            }
+        });
+    };
+
+</script>

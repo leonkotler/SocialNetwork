@@ -1,0 +1,54 @@
+﻿@model IEnumerable<SocialNetwork.Models.Post>
+
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2>@Session["Fullname"]'s Profile</h2>
+<input type="button" value="Edit details" onclick="@("window.location.href='" + @Url.Action("Edit", "Users",new { id = Session["UserId"] }) + "'");" />
+@{
+    if (Model != null)
+    {
+        <table class="table">
+
+            @foreach (var post in Model)
+            {
+                <tr>
+                    <td>
+                        Pulished by @post.User.FirstName @post.User.LastName
+                        <br /><br />
+                        <strong style="font-size:200%">
+                            @post.Title
+                        </strong><br />
+                        @post.Content
+                        <br />
+                        <text id="@post.PostID">@post.Likes</text> Likes |
+                        <a onclick="addLike(@post.PostID)" class="like">Like</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @foreach (var comment in post.Comments)
+                        {
+                            @Html.Raw("Posted by: ") @comment.User.FirstName @Html.Raw(" ") @comment.User.LastName <br />
+                            @comment.Content <br />
+                        }
+                        @Html.ActionLink("Add Comment", "Create", "Comments", new { postId = post.PostID }, null)
+                        <hr />
+                    </td>
+
+                </tr>
+
+            }
+        </table>
+    }
+    else
+    {
+        @Html.Raw("You have no posts")
+    }
+} 
+<input type="button" value="Create Post" onclick="@("window.location.href='" + @Url.Action("Create", "Posts") + "'");" />
+
+

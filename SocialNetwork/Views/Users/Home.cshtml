@@ -1,49 +1,58 @@
-﻿@model IEnumerable<SocialNetwork.Models.Post>
+﻿@model List<SocialNetwork.Models.Post>
 
 @{
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+    List<SocialNetwork.Models.Post> posts = Model as List<SocialNetwork.Models.Post>;
 }
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Likes)
-            </th>
-            <th></th>
-        </tr>
-    
-    @foreach (var item in Model) {
+<!-- Post section -->
+
+
+
+<table class="table">
+    @foreach (var post in posts)
+    {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Likes)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.PostID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.PostID })
+                Pulished by @post.User.FirstName @post.User.LastName
+                <br /><br />
+                <strong style="font-size:200%">
+                    @post.Title
+                </strong><br />
+                @post.Content
+                <br />
+                <text id="@post.PostID">@post.Likes</text> Likes |
+                <a onclick="addLike(@post.PostID)" class="like">Like</a>
             </td>
         </tr>
+
+        <tr>
+            <td>
+               
+                @foreach (var comment in post.Comments)
+                {
+                    @Html.Raw("Posted by: ") @comment.User.FirstName @Html.Raw(" ") @comment.User.LastName <br />
+                    @comment.Content <br />
+                }
+                @Html.ActionLink("Add Comment", "Create", "Comments", new { postId = post.PostID }, null)
+               
+                <hr />
+            </td>
+
+        </tr>
+
     }
-    
-    </table>
+</table>
+
+
+
+@section Header{
+    <header class="major">
+        <h2>
+            News Feed
+        </h2>
+    </header>
+    <p>Welcome to your feed :-) <br /> Here you can see what is going on with your friends..</p>
+    <input type="button" value="Create Post" onclick="@("window.location.href='" + @Url.Action("Create", "Posts") + "'");" />
+}
+

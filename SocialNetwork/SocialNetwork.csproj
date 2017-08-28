@@ -113,12 +113,14 @@
     <Content Include="Content\assets\js\util.js" />
     <Content Include="Content\images\avatar.jpg" />
     <Content Include="Content\images\bg.jpg" />
+    <Content Include="Content\images\female.png" />
     <Content Include="Content\images\fulls\01.jpg" />
     <Content Include="Content\images\fulls\02.jpg" />
     <Content Include="Content\images\fulls\03.jpg" />
     <Content Include="Content\images\fulls\04.jpg" />
     <Content Include="Content\images\fulls\05.jpg" />
     <Content Include="Content\images\fulls\06.jpg" />
+    <Content Include="Content\images\male.png" />
     <Content Include="Content\images\thumbs\01.jpg" />
     <Content Include="Content\images\thumbs\02.jpg" />
     <Content Include="Content\images\thumbs\03.jpg" />
@@ -146,20 +148,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config" />
-    <Content Include="Views\Comments\Delete.cshtml" />
-    <Content Include="Views\Comments\Details.cshtml" />
-    <Content Include="Views\Comments\Edit.cshtml" />
-    <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Views\Posts\Create.cshtml" />
-    <Content Include="Views\Posts\Delete.cshtml" />
-    <Content Include="Views\Posts\Details.cshtml" />
-    <Content Include="Views\Posts\Edit.cshtml" />
-    <Content Include="Views\Posts\Index.cshtml" />
-    <Content Include="Views\Groups\Create.cshtml" />
-    <Content Include="Views\Groups\Delete.cshtml" />
-    <Content Include="Views\Groups\Details.cshtml" />
-    <Content Include="Views\Groups\Edit.cshtml" />
-    <Content Include="Views\Groups\Index.cshtml" />
+    <Content Include="Views\Groups\UserGroups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -183,17 +173,20 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
-    <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Home.cshtml" />
     <Content Include="Views\Users\Login.cshtml" />
     <Content Include="Views\Comments\Create.cshtml" />
     <Content Include="Views\Users\UserProfile.cshtml" />
     <Content Include="Views\Groups\ViewGroup.cshtml" />
+    <Content Include="Views\Groups\Create.cshtml" />
+    <Content Include="Views\Groups\Index.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Groups\Edit.cshtml" />
+    <Content Include="Views\Groups\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -16,11 +16,11 @@ namespace SocialNetwork.Models
         [Display(Name = "First name")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "First name is requried")]
+        [Required(ErrorMessage = "Last name is requried")]
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Enter a password")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -30,11 +30,17 @@ namespace SocialNetwork.Models
 
         [Required]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Date of birth is required")]
         [Display(Name = "Date of birth")]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+
+        [Display(Name = "Image Url")]
+        [DataType(DataType.ImageUrl)]
+        public string ImageUrl { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Group> Groups { get; set; }

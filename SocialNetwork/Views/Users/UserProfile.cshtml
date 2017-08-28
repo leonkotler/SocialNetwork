@@ -5,8 +5,7 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h2>@Session["Fullname"]'s Profile</h2>
-<input type="button" value="Edit details" onclick="@("window.location.href='" + @Url.Action("Edit", "Users",new { id = Session["UserId"] }) + "'");" />
+
 @{
     if (Model != null)
     {
@@ -24,7 +23,11 @@
                         @post.Content
                         <br />
                         <text id="@post.PostID">@post.Likes</text> Likes |
-                        <a onclick="addLike(@post.PostID)" class="like">Like</a>
+                        <a onclick="addPostLike(@post.PostID)" class="like">Like</a>
+
+                        @Html.Raw("| ") @Html.ActionLink("Edit post", "Edit", "Posts", new { postId = post.PostID }, null)
+                        @Html.Raw(" | ") @Html.ActionLink("Delete post", "Delete", "Posts", new { postId = post.PostID }, null)
+
                     </td>
                 </tr>
 
@@ -48,7 +51,16 @@
     {
         @Html.Raw("You have no posts")
     }
-} 
+}
 <input type="button" value="Create Post" onclick="@("window.location.href='" + @Url.Action("Create", "Posts") + "'");" />
 
 
+@section Header{
+    <header class="major">
+        <h2>@Session["Fullname"]'s Profile</h2>
+    </header>
+    <hr />
+    <br />
+    <input type="button" value="Edit details" onclick="@("window.location.href='" + @Url.Action("Edit", "Users",new { id = Session["UserId"] }) + "'");" />
+
+}

@@ -10,6 +10,7 @@
 </head>
 <body id="top">
 
+
     <!-- Header -->
     <header id="header">
         <div class="inner">
@@ -21,14 +22,14 @@
                 }
                 else
                 {
-                    <a href="#" class="image avatar"><img src="~/Content/images/avatar.jpg" alt="" /></a>
+                    <a href="#" class="image avatar"><img src="@Session["ImageUrl"]" alt="" /></a>
                     <h1>
                         <strong style="font-size: 200%">@Session["Fullname"]</strong>
 
                         <br /><br />
                         <a onclick="@("window.location.href='" + @Url.Action("Home", "Users") + "'");">Home</a><br />
                         <a onclick="@("window.location.href='" + @Url.Action("UserProfile", "Users") + "'");">Profile</a><br />
-                        <a onclick="@("window.location.href='" + @Url.Action("Index", "Groups") + "'");">Groups</a><br />
+                        <a onclick="@("window.location.href='" + @Url.Action("UserGroups", "Groups") + "'");">Groups</a><br />
                         <a onclick="@("window.location.href='" + @Url.Action("Logout", "Users") + "'");">Logout</a><br />
                     </h1>
                 }
@@ -117,16 +118,30 @@
 </script>
 
 <script>
-    function addLike(postId) {
+    function addPostLike(postId) {
         var id = postId;
         $.ajax({
             type: "POST",
-            url: "/Users/AddLike",
+            url: "/Posts/AddLike",
             data: { postId: id },
             success: function (result) {
                 $('#' + postId).replaceWith(result);
             }
         });
     };
+
+   
+    function addGroupLike(groupId) {
+        var id = groupId;
+        $.ajax({
+            type: "POST",
+            url: "/Groups/AddLike",
+            data: { groupId: id },
+            success: function (result) {
+                $('#' + groupId).replaceWith(result);
+            }
+        });
+    };
+
 
 </script>

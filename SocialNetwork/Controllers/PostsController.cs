@@ -37,8 +37,13 @@ namespace SocialNetwork.Controllers
         }
 
         // GET: Posts/Create
-        public ActionResult Create()
+        public ActionResult Create(int? groupId)
         {
+            if (groupId == null)
+            {
+                groupId = 0;
+            }
+            ViewBag.GroupId = groupId;
             return View();
         }
 
@@ -47,7 +52,7 @@ namespace SocialNetwork.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Content")] Post post)
+        public ActionResult Create([Bind(Include = "GroupId,Title,Content")] Post post)
         {
 
             if (ModelState.IsValid)
@@ -55,22 +60,36 @@ namespace SocialNetwork.Controllers
                 User user = db.Users.Find(Convert.ToInt32(Session["UserID"]));
                 post.User = user;
                 post.PostDate = DateTime.Now;
-                db.Posts.Add(post);
+
+                if (post.GroupId == 0)
+                {
+                    post.GroupId = null;
+                    db.Posts.Add(post);
+                    db.SaveChanges();
+                    return RedirectToAction("Home", "Users");
+                }
+
+                Group group = db.Groups.Find(post.GroupId);
+                group.Posts.Add(post);
+                db.Entry(group).State = group.GroupID == 0 ?
+                                   EntityState.Added :
+                                   EntityState.Modified;
+
                 db.SaveChanges();
-                return RedirectToAction("Home", "Users");
+                return RedirectToAction("ViewGroup", "Groups", new { groupId = group.GroupID });
             }
 
             return View(post);
         }
 
         // GET: Posts/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? postId)
         {
-            if (id == null)
+            if (postId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Find(postId);
             if (post == null)
             {
                 return HttpNotFound();
@@ -83,25 +102,25 @@ namespace SocialNetwork.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostID,UserID,Title,Content,PostDate,Likes")] Post post)
+        public ActionResult Edit([Bind(Include = "GroupId,PostID,UserId,Title,Content,PostDate,Likes")] Post post)                                                 
         {
             if (ModelState.IsValid)
             {
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Home","Users");
             }
             return View(post);
         }
 
         // GET: Posts/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? postId)
         {
-            if (id == null)
+            if (postId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Find(postId);
             if (post == null)
             {
                 return HttpNotFound();
@@ -112,12 +131,33 @@ namespace SocialNetwork.Controllers
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int postId)
         {
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Find(postId);
+            if (post.Comments != null)
+            {
+                db.Comments.RemoveRange(post.Comments);
+
+            }
             db.Posts.Remove(post);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Home","Users");
+        }
+
+        [HttpPost]
+        public int AddLike(int? postId)
+        {
+
+            Post post = db.Posts.Find(postId);
+            post.Likes++;
+
+            db.Entry(post).State = post.PostID == 0 ?
+                                   EntityState.Added :
+                                   EntityState.Modified;
+
+            db.SaveChanges();
+            return post.Likes;
+
         }
 
         protected override void Dispose(bool disposing)
@@ -128,5 +168,7 @@ namespace SocialNetwork.Controllers
             }
             base.Dispose(disposing);
         }
+
+
     }
 }

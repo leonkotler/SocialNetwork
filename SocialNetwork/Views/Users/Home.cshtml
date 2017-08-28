@@ -5,10 +5,6 @@
     List<SocialNetwork.Models.Post> posts = Model as List<SocialNetwork.Models.Post>;
 }
 
-<!-- Post section -->
-
-
-
 <table class="table">
     @foreach (var post in posts)
     {
@@ -22,7 +18,13 @@
                 @post.Content
                 <br />
                 <text id="@post.PostID">@post.Likes</text> Likes |
-                <a onclick="addLike(@post.PostID)" class="like">Like</a>
+                <a onclick="addPostLike(@post.PostID)" class="like">Like</a>
+
+                @if (post.UserId == Convert.ToInt32(Session["UserId"]))
+                {
+                    @Html.Raw("| ") @Html.ActionLink("Edit post", "Edit", "Posts", new { postId = post.PostID }, null)
+                    @Html.Raw(" | ") @Html.ActionLink("Delete post", "Delete", "Posts", new { postId = post.PostID }, null)
+                }
             </td>
         </tr>
 
@@ -34,7 +36,7 @@
                     @Html.Raw("Posted by: ") @comment.User.FirstName @Html.Raw(" ") @comment.User.LastName <br />
                     @comment.Content <br />
                 }
-                @Html.ActionLink("Add Comment", "Create", "Comments", new { postId = post.PostID }, null)
+                @Html.ActionLink("Add Comment", "Create", "Comments", new { postId = post.PostID}, null)
                
                 <hr />
             </td>
@@ -52,7 +54,7 @@
             News Feed
         </h2>
     </header>
-    <p>Welcome to your feed :-) <br /> Here you can see what is going on with your friends..</p>
+    <p>Welcome to your feed :-) <br /> Here you can see what is going on with your friends..</p><br /><br /><br />
     <input type="button" value="Create Post" onclick="@("window.location.href='" + @Url.Action("Create", "Posts") + "'");" />
 }
 

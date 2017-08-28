@@ -37,6 +37,14 @@ namespace SocialNetwork.Controllers
                 comment.Post = post;
                 db.Comments.Add(comment);
                 db.SaveChanges();
+
+                if (Session["GroupRedirectId"] != null)
+                {
+                    int SessionGroupId = Convert.ToInt32(Session["GroupRedirectId"]);
+                    Session["GroupRedirectId"] = null;
+                    return RedirectToAction("ViewGroup", "Groups", new { groupId = SessionGroupId });
+                }
+
                 return RedirectToAction("Home", "Users");
             }
 

@@ -7,6 +7,8 @@
     SocialNetwork.Models.User user = ViewBag.User;
 }
 
+
+
 <table class="table">
     @foreach (var group in Model)
     {
@@ -16,30 +18,29 @@
                 <br /><br />
                 <strong style="font-size:200%">
                     <input type="button" value="@group.Title" onclick="@("window.location.href='" +
-                                            @Url.Action("ViewGroup", "Groups", new { groupId = group.GroupID }) + "'");" />
+                            @Url.Action("ViewGroup", "Groups", new { groupId = group.GroupID }) + "'");" />
                 </strong>
                 <br />
                 <text id="@group.GroupID">@group.Likes</text> Likes |
                 <a onclick="addGroupLike(@group.GroupID)" class="like">Like</a>
-
-                @if (!group.Members.Contains(user))
+                @if (group.AdminId == Convert.ToInt32(Session["UserId"]))
                 {
-                   @Html.Raw("| ") @Html.ActionLink("Join group", "AddMember", "Groups", new { groupId = group.GroupID, userId = user.UserID }, null)
+                    @Html.Raw("| ") @Html.ActionLink("Edit group", "Edit", "Groups", new { groupId = group.GroupID }, null)
+                    @Html.Raw(" | ") @Html.ActionLink("Delete group", "Delete", "Groups", new { groupId = group.GroupID }, null)
                 }
-
             </td>
         </tr>
-
     }
-
 </table>
 
 
 @section Header{
     <header class="major">
-        <h2>All groups</h2>
+        <h2>@user.FirstName&nbsp;@user.LastName's groups</h2>
         <hr />
         <br />
-        <input type="button" value="Create group" onclick="@("window.location.href='" + @Url.Action("Create", "Groups",new { userId = Session["UserId"]},null) + "'");" />
+        <input type="button" value="Create group" onclick="@("window.location.href='" + @Url.Action("Create", "Groups",new { userId = Session["UserID"]},null) + "'");" /> &nbsp;&nbsp;&nbsp;
+        <input type="button" value="View all groups" onclick="@("window.location.href='" + @Url.Action("Index", "Groups") + "'");" />
     </header>
 }
+

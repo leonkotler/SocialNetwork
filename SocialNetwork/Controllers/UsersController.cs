@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SocialNetwork.DAL;
 using SocialNetwork.Models;
-using System.Web.Security;
 
 namespace SocialNetwork.Controllers
 {
@@ -25,7 +22,7 @@ namespace SocialNetwork.Controllers
         public ActionResult Home(User loggedUser)
         {
             if (Session["UserID"] != null)
-            { 
+            {
                 var userPosts = db.Posts.OrderByDescending(p => p.Likes).ToList();
                 return View(userPosts);
             }
@@ -68,6 +65,20 @@ namespace SocialNetwork.Controllers
             {
                 Session["UserID"] = loggedUser.UserID.ToString();
                 Session["Username"] = loggedUser.Email.ToString();
+
+                if (loggedUser.ImageUrl != null)
+                {
+                    Session["ImageUrl"] = loggedUser.ImageUrl;
+                }
+                else if (loggedUser.Gender == Utils.Utils.MyGender.Male)
+                {
+                    Session["ImageUrl"] = "~/Content/images/male.jpg";
+                }
+                else
+                {
+                     Session["ImageUrl"] = "~/Content/images/female.jpg";
+                }
+
                 Session["Fullname"] = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
                 return RedirectToAction("Home", loggedUser);
             }
@@ -94,22 +105,7 @@ namespace SocialNetwork.Controllers
             return View();
         }
 
-        [HttpPost]
-        public int AddLike(int? postId)
-        {
-          
-            Post post = db.Posts.Find(postId);
-            post.Likes++;
 
-            db.Entry(post).State = post.PostID == 0 ?
-                                   EntityState.Added :
-                                   EntityState.Modified;
-
-            db.SaveChanges();
-            return post.Likes;
-
-        }
-       
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
@@ -143,13 +139,13 @@ namespace SocialNetwork.Controllers
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Gender,Email,BirthDate")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Gender,Email,BirthDate,Password")] User user)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Logout","Users");
+                return RedirectToAction("Logout", "Users");
             }
             return View(user);
         }

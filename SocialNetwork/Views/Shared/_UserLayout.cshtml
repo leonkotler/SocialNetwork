@@ -58,28 +58,6 @@
             </div>
 
         </section>
-
-        <!-- Three -->
-        @{
-            if (Session["UserId"] != null)
-            {
-                <section id="three">
-                    <h2>Search</h2>
-                    <div class="row">
-                        <div class="8u 12u$(small)">
-                            <form method="post" action="#">
-                                <div class="row uniform 50%">
-                                    <div class="6u 12u$(xsmall)"><input type="text" name="Insert keywords" id="search" placeholder="Search" /></div>
-                                </div>
-                            </form>
-                            <ul class="actions">
-                                <li><input type="submit" value="Search" /></li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-            }
-        }
         
     </div>
 
@@ -89,12 +67,12 @@
             @{
                 if (Session["UserId"] != null)
                 {
-                    <ul class="icons">
+                    @*<ul class="icons">
                         <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
                         <li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
                         <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
                         <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
-                    </ul>
+                    </ul>*@
 
                 }
                 <ul class="copyright">

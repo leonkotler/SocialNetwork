@@ -1,23 +1,91 @@
 ﻿
 @{
-    ViewBag.Title = "AdvancedSearch";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
 <div>
-
+    <h2>Search users</h2>
     <div id="userSearch">
+        @using (Html.BeginForm("SearchUsers", "Admin"))
+        {
+            <div class="form-group">
+               @Html.Raw("First name:")
+                <div class="col-md-10">
+                   @Html.TextBox("FirstName")
+                </div>
+            </div>
 
+            <div class="form-group">
+                @Html.Raw("Last name:")
+                <div class="col-md-10">
+                    @Html.TextBox("LastName")
+                </div>
+            </div>
 
-
+            <div class="form-group">
+                @Html.Raw("Email:")
+                <div class="col-md-10">
+                    @Html.TextBox("Email")
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+        }
     </div>
+    <hr />
 
+    <h2>Search posts</h2>
     <div id="postSearch">
+        @using (Html.BeginForm("SearchPosts", "Admin"))
+        {
+            <div class="form-group">
+                @Html.Raw("Title:")
+                <div class="col-md-10">
+                    @Html.TextBox("Title")
+                </div>
+            </div>
 
+            <div class="form-group">
+                @Html.Raw("Content:")
+                <div class="col-md-10">
+                    @Html.TextBox("Content")
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Raw("Likes:")
+                <div class="col-md-10">
+                    @Html.TextBox("Likes")
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+        }
     </div>
+    <hr />
 
+    <h2>Search groups</h2>
     <div id="groupSearch">
-
+        @using (Html.BeginForm("SearchGroups", "Admin"))
+        {
+            <div class="form-group">
+                @Html.Raw("Title:")
+                <div class="col-md-10">
+                    @Html.TextBox("Title")
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+        }
     </div>
 
 </div>

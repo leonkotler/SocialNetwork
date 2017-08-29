@@ -10,11 +10,59 @@
     <input type="button" value="Advanced Search" onclick="@("window.location.href='" + @Url.Action("AdvancedSearch", "Admin") + "'");" />
 </div>
 
+ <p id="address" hidden>@ViewBag.Address</p>
+
+<div style="margin:auto; display:block">
+    <style>
+        #map {
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+    <br />
+    <h3>Server Location</h3>
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            var lat;
+            var lng;
+
+            $.ajax({
+                type: "GET",
+                url: "https://maps.googleapis.com/maps/api/geocode/json",
+                data: { address: $("#address").text(), key: "AIzaSyAZLl3DJCxaUMXC33mLmroeT4QXRZrfkZc" },
+                dataType: "json",
+                success: function (result) {             
+
+                    var colman = {
+                        lat: result.results[0].geometry.location.lat,
+                        lng: result.results[0].geometry.location.lng
+                    };
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 16,
+                        center: colman
+                    });
+                    var marker = new google.maps.Marker({
+                        position: colman,
+                        map: map
+                    });
+                }
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZLl3DJCxaUMXC33mLmroeT4QXRZrfkZc&callback=initMap">
+    </script>
+</div>
+
+
 @section Header{
     <header class="major">
         <h2>
-           Admin control panel
+            Admin control panel
         </h2>
     </header>
 }
+
+
 

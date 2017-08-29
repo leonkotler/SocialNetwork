@@ -21,12 +21,11 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { postId = item.PostID }) |
-                    @Html.ActionLink("Delete", "Delete", new { postId = item.PostID })
+                    @Html.ActionLink("Edit", "Edit","Posts", new { postId = item.PostID },null) |
+                    @Html.ActionLink("Delete", "Delete", "Posts", new { postId = item.PostID },null)
                 </td>
             </tr>
         }
-
     </table>
 </div>
 
@@ -35,6 +34,7 @@
         <h2>
             Post search results
         </h2>
+        <input type="button" value="Return to search" onclick="@("window.location.href='" + @Url.Action("AdvancedSearch", "Admin") + "'");" />
     </header>
 }
 

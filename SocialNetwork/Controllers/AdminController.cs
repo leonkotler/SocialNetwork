@@ -16,8 +16,11 @@ namespace SocialNetwork.Controllers
         {
             if (Session["Admin"] != null)
             {
+                ViewBag.Address = "Rishon LeTsion, baron hirsch 16";
                 return View();
             }
+
+            
 
             return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
         }
@@ -58,6 +61,15 @@ namespace SocialNetwork.Controllers
         {
             if (Session["Admin"] != null)
             {
+                if (user.FirstName == null)
+                    user.FirstName = "";
+
+                if (user.LastName == null)
+                    user.LastName = "";
+
+                if (user.Email == null)
+                    user.Email = "";
+
                 List<User> users = db.Users.Where(u => u.FirstName.Contains(user.FirstName) &&
                                                       u.LastName.Contains(user.LastName) &&
                                                       u.Email.Contains(user.Email)).ToList();
@@ -75,6 +87,12 @@ namespace SocialNetwork.Controllers
         {
             if (Session["Admin"] != null)
             {
+                if (post.Title == null) 
+                    post.Title = "";
+
+                if (post.Content == null)
+                    post.Content = "";         
+
                 List<Post> posts = db.Posts.Where(p => p.Content.Contains(post.Content) &&
                                                       p.Title.Contains(post.Title) &&
                                                       p.Likes >= post.Likes).ToList();
@@ -92,6 +110,9 @@ namespace SocialNetwork.Controllers
         {
             if (Session["Admin"] != null)
             {
+                if (group.Title == null)
+                    group.Title = "";
+
                 List<Group> groups = db.Groups.Where(g => g.Title.Contains(group.Title)).ToList();
 
                 if (groups.Count == 0 || groups == null)

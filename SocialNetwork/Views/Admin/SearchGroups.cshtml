@@ -21,8 +21,8 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { groupId = item.GroupID }) |               
-                    @Html.ActionLink("Delete", "Delete", new { groupId = item.GroupID })
+                    @Html.ActionLink("Edit", "Edit","Groups", new { groupId = item.GroupID },null) |               
+                    @Html.ActionLink("Delete", "Delete", "Groups", new { groupId = item.GroupID },null)
                 </td>
             </tr>
         }
@@ -36,5 +36,6 @@
         <h2>
             Group search results
         </h2>
+        <input type="button" value="Return to search" onclick="@("window.location.href='" + @Url.Action("AdvancedSearch", "Admin") + "'");" />
     </header>
 }

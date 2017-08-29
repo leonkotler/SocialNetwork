@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Statistics";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    List<string[]> likesList  = ViewBag.LikesPerUser;
+    List<string[]> commentsList = ViewBag.CommentsPerUser;
+}
+
+
+
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                <b>First name</b>
+            </th>
+            <th>
+                <b>Last name</b>
+            </th>
+
+            <th>
+                <b># of likes</b>
+            </th>
+        </tr>
+
+        @foreach (var item in likesList)
+        {
+            <tr>
+                <td>
+                    @item[0]
+                </td>
+
+                <td>
+                    @item[1]
+                </td>
+                    
+                <td>
+                    @item[2]
+                </td>              
+            </tr>
+        }
+
+    </table>
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                <b>First name</b>
+            </th>
+            <th>
+                <b>Last name</b>
+            </th>
+
+            <th>
+                <b># of comments</b>
+            </th>
+        </tr>
+
+        @foreach (var item in commentsList)
+        {
+            <tr>
+                <td>
+                    @item[0]
+                </td>
+
+                <td>
+                    @item[1]
+                </td>
+
+                <td>
+                    @item[2]
+                </td>         
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section Header{
+    <header class="major">
+        <h2>User Statistics</h2>
+    </header>
+}
+

@@ -25,7 +25,7 @@
                 <br />
                 <text id="@post.PostID">@post.Likes</text> Likes |
                 <a onclick="addPostLike(@post.PostID)" class="like">Like</a>
-                @if (post.UserId == Convert.ToInt32(Session["UserId"]))
+                @if (post.UserId == Convert.ToInt32(Session["UserId"]) || Session["Admin"] != null)
                 {
                     @Html.Raw("| ") @Html.ActionLink("Edit post", "Edit", "Posts", new { postId = post.PostID }, null)
                     @Html.Raw(" | ") @Html.ActionLink("Delete post", "Delete", "Posts", new { postId = post.PostID }, null)

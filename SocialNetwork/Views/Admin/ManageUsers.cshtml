@@ -1,0 +1,63 @@
+﻿@model List<SocialNetwork.Models.User>
+
+@{
+    ViewBag.Title = "ManageUsers";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                <b>@Html.DisplayNameFor(model => model[0].FirstName)</b> 
+            </th>
+            <th>
+                <b>@Html.DisplayNameFor(model => model[0].LastName)</b>
+            </th>
+
+            <th>
+                <b>@Html.DisplayNameFor(model => model[0].Gender)</b>
+            </th>
+            <th>
+                <b>@Html.DisplayNameFor(model => model[0].Email)</b>
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Delete", "Delete", "Users", new { id = item.UserID })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+@section Header{
+    <header class="major">
+        <h2>
+            User Management
+        </h2>
+    </header>
+}
+
+
+
+

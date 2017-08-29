@@ -20,7 +20,7 @@
                 <text id="@post.PostID">@post.Likes</text> Likes |
                 <a onclick="addPostLike(@post.PostID)" class="like">Like</a>
 
-                @if (post.UserId == Convert.ToInt32(Session["UserId"]))
+                @if (post.UserId == Convert.ToInt32(Session["UserId"]) || Session["Admin"] != null)
                 {
                     @Html.Raw("| ") @Html.ActionLink("Edit post", "Edit", "Posts", new { postId = post.PostID }, null)
                     @Html.Raw(" | ") @Html.ActionLink("Delete post", "Delete", "Posts", new { postId = post.PostID }, null)
@@ -54,7 +54,22 @@
             News Feed
         </h2>
     </header>
+    <!-- Weather -->
+    <p>
+        Right now in <span id="city"></span> is <span id="description"></span>, temp is <span id="temp"></span>° and humidity is <span id="humidity"></span>% <img src="" id="icon" />
+    </p>
     <p>Welcome to your feed :-) <br /> Here you can see what is going on with your friends..</p><br /><br /><br />
     <input type="button" value="Create Post" onclick="@("window.location.href='" + @Url.Action("Create", "Posts") + "'");" />
 }
-
+<script>
+    $(function () {
+        $.get("http://api.openweathermap.org/data/2.5/weather?q=Rishon&APPID=34fd307363e59882db700266324cf1b3&units=metric", function (response) {
+            console.log(response);
+            $("#city").text(response.name);
+            $("#temp").text(response.main.temp);
+            $("#humidity").text(response.main.humidity);
+            $("#description").text(response.weather[0].description);
+            $("#icon").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon+".png");
+        })
+    });
+</script>

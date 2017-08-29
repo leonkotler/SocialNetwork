@@ -42,6 +42,9 @@ namespace SocialNetwork.Models
         [DataType(DataType.ImageUrl)]
         public string ImageUrl { get; set; }
 
+        [ScaffoldColumn(false)]
+        public bool IsAdmin { get; set; }
+
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
     }

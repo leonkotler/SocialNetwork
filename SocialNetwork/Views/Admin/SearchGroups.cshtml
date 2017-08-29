@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SocialNetwork.Models.Group>
+
+@{
+    ViewBag.Title = "SearchGroups";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div>
+    <table class="table">
+        <tr>      
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { groupId = item.GroupID }) |               
+                    @Html.ActionLink("Delete", "Delete", new { groupId = item.GroupID })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+@section Header{
+    <header class="major">
+        <h2>
+            Group search results
+        </h2>
+    </header>
+}

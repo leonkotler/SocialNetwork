@@ -23,11 +23,13 @@
                 <br />
                 <text id="@group.GroupID">@group.Likes</text> Likes |
                 <a onclick="addGroupLike(@group.GroupID)" class="like">Like</a>
-                @if (group.AdminId == Convert.ToInt32(Session["UserId"]))
+
+                @if (group.AdminId == Convert.ToInt32(Session["UserId"]) || Session["Admin"] != null)
                 {
                     @Html.Raw("| ") @Html.ActionLink("Edit group", "Edit", "Groups", new { groupId = group.GroupID }, null)
                     @Html.Raw(" | ") @Html.ActionLink("Delete group", "Delete", "Groups", new { groupId = group.GroupID }, null)
                 }
+
             </td>
         </tr>
     }

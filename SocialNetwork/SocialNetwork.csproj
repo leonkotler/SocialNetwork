@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
@@ -187,6 +188,15 @@
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Groups\Edit.cshtml" />
     <Content Include="Views\Groups\Delete.cshtml" />
+    <Content Include="Views\Admin\AccessDenied.cshtml" />
+    <Content Include="Views\Admin\ControlPanel.cshtml" />
+    <Content Include="Views\Admin\ManageUsers.cshtml" />
+    <Content Include="Views\Admin\Statistics.cshtml" />
+    <Content Include="Views\Admin\AdvancedSearch.cshtml" />
+    <Content Include="Views\Admin\SearchUsers.cshtml" />
+    <Content Include="Views\Admin\NoResults.cshtml" />
+    <Content Include="Views\Admin\SearchPosts.cshtml" />
+    <Content Include="Views\Admin\SearchGroups.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

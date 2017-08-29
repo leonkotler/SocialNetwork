@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "ControlPanel";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div>
+    <input type="button" value="Manage Users" onclick="@("window.location.href='" + @Url.Action("ManageUsers", "Admin") + "'");" />
+    <input type="button" value="Statistics" onclick="@("window.location.href='" + @Url.Action("Statistics", "Admin") + "'");" />
+    <input type="button" value="Advanced Search" onclick="@("window.location.href='" + @Url.Action("AdvancedSearch", "Admin") + "'");" />
+</div>
+
+@section Header{
+    <header class="major">
+        <h2>
+           Admin control panel
+        </h2>
+    </header>
+}
+

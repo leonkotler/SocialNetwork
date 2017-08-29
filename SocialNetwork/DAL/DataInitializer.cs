@@ -21,7 +21,7 @@ namespace SocialNetwork.DAL
             User user1 = new User { UserID=1, FirstName = "Eliahu", LastName = "Khalastchi",Password="123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2017-08-09"), Email = "eli@colman.co.il" , ImageUrl=eliAvatar};
             User user2 = new User { UserID=2, FirstName = "Oren", LastName = "Kapach",Password="123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2015-08-09"), Email = "oren@colman.co.il", ImageUrl = orenAvatar };
             User user3 = new User { UserID=3, FirstName = "Nezer", LastName = "Zaidenberg", Password = "123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2016-08-09"), Email = "nezer@colman.co.il", ImageUrl = nezerAvatar };
-            User user4 = new User { UserID=4, FirstName = "Igor", LastName = "Rochlin", Password = "123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2014-08-09"), Email = "igor@colman.co.il", ImageUrl = igorAvatar };
+            User user4 = new User { UserID=4, IsAdmin=true ,FirstName = "Igor", LastName = "Rochlin", Password = "123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2014-08-09"), Email = "igor@colman.co.il", ImageUrl = igorAvatar };
 
             var users = new List<User>();
 
@@ -34,12 +34,19 @@ namespace SocialNetwork.DAL
             Post post2 = new Post { PostID = 2, GroupId = 2, User = user2, Content = "Post 2 content", Likes = 6, PostDate = DateTime.Parse("2012-08-09"), Title = "Post 2 title" };
             Post post3 = new Post { PostID = 3, User = user3, Content = "Post 3 content", Likes = 7, PostDate = DateTime.Parse("2013-08-09"), Title = "Post 3 title" };
             Post post4 = new Post { PostID = 4, User = user4, Content = "Post 4 content", Likes = 8, PostDate = DateTime.Parse("2014-08-09"), Title = "Post 4 title" };
+            Post post5 = new Post { PostID = 5, User = user4, Content = "Post 5 content", Likes = 8, PostDate = DateTime.Parse("2014-08-09"), Title = "Post 5 title" };
+            Post post6 = new Post { PostID = 6, User = user4, Content = "Post 6 content", Likes = 8, PostDate = DateTime.Parse("2014-08-09"), Title = "Post 6 title" };
+            Post post7 = new Post { PostID = 7, User = user4, Content = "Post 7 content", Likes = 8, PostDate = DateTime.Parse("2014-08-09"), Title = "Post 7 title" };
+
 
             var posts = new List<Post>();
             posts.Add(post1);
             posts.Add(post2);
             posts.Add(post3);
             posts.Add(post4);
+            posts.Add(post5);
+            posts.Add(post6);
+            posts.Add(post7);
 
             List<Post> posts1 = new List<Post>();
             List<Post> posts2 = new List<Post>();

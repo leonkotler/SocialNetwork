@@ -17,8 +17,7 @@ namespace SocialNetwork.Controllers
         {
             return View(db.Users.ToList());
         }
-
-        // GET: Users/Home
+       
         public ActionResult Home(User loggedUser)
         {
             if (Session["UserID"] != null)
@@ -38,14 +37,14 @@ namespace SocialNetwork.Controllers
 
             else return View();
         }
+     
+        
 
-        // GET: Users/Register
         public ActionResult Register()
         {
             return View();
         }
-
-        // GET: Users/Login
+   
         public ActionResult Login()
         {
             return View();
@@ -65,6 +64,11 @@ namespace SocialNetwork.Controllers
             {
                 Session["UserID"] = loggedUser.UserID.ToString();
                 Session["Username"] = loggedUser.Email.ToString();
+
+                if (loggedUser.IsAdmin)
+                {
+                    Session["Admin"] = "true";
+                }
 
                 if (loggedUser.ImageUrl != null)
                 {
@@ -90,6 +94,7 @@ namespace SocialNetwork.Controllers
         }
 
 
+
         [HttpPost]
         public ActionResult Register(User account)
         {
@@ -103,22 +108,6 @@ namespace SocialNetwork.Controllers
             ViewBag.Message = account.FirstName + " " + account.LastName + "successfuly registered!";
 
             return View();
-        }
-
-
-        // GET: Users/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
         }
 
         // GET: Users/Edit/5

@@ -30,6 +30,12 @@
                         <a onclick="@("window.location.href='" + @Url.Action("Home", "Users") + "'");">Home</a><br />
                         <a onclick="@("window.location.href='" + @Url.Action("UserProfile", "Users") + "'");">Profile</a><br />
                         <a onclick="@("window.location.href='" + @Url.Action("UserGroups", "Groups") + "'");">Groups</a><br />
+                        
+                        @if (Session["Admin"] != null)
+                        {
+                            <a onclick="@("window.location.href='" + @Url.Action("ControlPanel", "Admin") + "'");">Control Panel</a><br />
+                        }
+
                         <a onclick="@("window.location.href='" + @Url.Action("Logout", "Users") + "'");">Logout</a><br />
                     </h1>
                 }

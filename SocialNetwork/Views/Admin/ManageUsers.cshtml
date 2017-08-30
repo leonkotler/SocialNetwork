@@ -27,6 +27,8 @@
 
         @foreach (var item in Model)
         {
+            if (!item.IsAdmin)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
@@ -43,9 +45,10 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("Delete", "Delete", "Users", new { id = item.UserID })
+                    @Html.ActionLink("Edit", "Edit", "Users", new { userId = item.UserID },null)
                 </td>
             </tr>
+            }
         }
 
     </table>

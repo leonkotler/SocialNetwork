@@ -4,47 +4,48 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
     List<SocialNetwork.Models.Post> posts = Model as List<SocialNetwork.Models.Post>;
 }
+<div class="container">
+    <table class="table">
+        @foreach (var post in posts)
+        {
+            <tr>
+                <td>
+                    Pulished by @post.User.FirstName @post.User.LastName
+                    <br /><br />
+                    <strong style="font-size:200%">
+                        @post.Title
+                    </strong><br />
+                    @post.Content
+                    <br />
+                    <text id="@post.PostID">@post.Likes</text> Likes |
+                    <a onclick="addPostLike(@post.PostID)" class="like">Like</a>
 
-<table class="table">
-    @foreach (var post in posts)
-    {
-        <tr>
-            <td>
-                Pulished by @post.User.FirstName @post.User.LastName
-                <br /><br />
-                <strong style="font-size:200%">
-                    @post.Title
-                </strong><br />
-                @post.Content
-                <br />
-                <text id="@post.PostID">@post.Likes</text> Likes |
-                <a onclick="addPostLike(@post.PostID)" class="like">Like</a>
-
-                @if (post.UserId == Convert.ToInt32(Session["UserId"]) || Session["Admin"] != null)
+                    @if (post.UserId == Convert.ToInt32(Session["UserId"]) || Session["Admin"] != null)
                 {
-                    @Html.Raw("| ") @Html.ActionLink("Edit post", "Edit", "Posts", new { postId = post.PostID }, null)
-                    @Html.Raw(" | ") @Html.ActionLink("Delete post", "Delete", "Posts", new { postId = post.PostID }, null)
-                }
-            </td>
-        </tr>
+                        @Html.Raw("| ") @Html.ActionLink("Edit post", "Edit", "Posts", new { postId = post.PostID }, null)
+                        @Html.Raw(" | ") @Html.ActionLink("Delete post", "Delete", "Posts", new { postId = post.PostID }, null)
+                    }
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-               
-                @foreach (var comment in post.Comments)
+            <tr>
+                <td>
+
+                    @foreach (var comment in post.Comments)
                 {
-                    @Html.Raw("Posted by: ") @comment.User.FirstName @Html.Raw(" ") @comment.User.LastName <br />
-                    @comment.Content <br />
-                }
-                @Html.ActionLink("Add Comment", "Create", "Comments", new { postId = post.PostID}, null)
-               
-                <hr />
-            </td>
+                        @Html.Raw("Posted by: ") @comment.User.FirstName @Html.Raw(" ") @comment.User.LastName <br />
+                        @comment.Content <br />
+                    }
+                    @Html.ActionLink("Add Comment", "Create", "Comments", new { postId = post.PostID }, null)
 
-        </tr>
+                    <hr />
+                </td>
 
-    }
-</table>
+            </tr>
+
+        }
+    </table>
+</div>
 
 
 
@@ -58,7 +59,7 @@
     <p>
         Right now in <span id="city"></span> is <span id="description"></span>, temp is <span id="temp"></span>° and humidity is <span id="humidity"></span>% <img src="" id="icon" />
     </p>
-    <p>Welcome to your feed :-) <br /> Here you can see what is going on with your friends..</p><br /><br /><br />
+    <p>Welcome to your feed :-) <br /> Here you can see what is going on with your friends..</p>
     <input type="button" value="Create Post" onclick="@("window.location.href='" + @Url.Action("Create", "Posts") + "'");" />
 }
 <script>
@@ -69,7 +70,7 @@
             $("#temp").text(response.main.temp);
             $("#humidity").text(response.main.humidity);
             $("#description").text(response.weather[0].description);
-            $("#icon").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon+".png");
+            $("#icon").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
         })
     });
 </script>

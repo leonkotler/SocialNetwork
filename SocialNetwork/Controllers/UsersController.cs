@@ -13,119 +13,47 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
-        public ActionResult Index()
-        {
-            return View(db.Users.ToList());
-        }
-       
-        public ActionResult Home(User loggedUser)
+        // Will execute before any action
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Session["UserID"] != null)
-            {
-                var userPosts = db.Posts.OrderByDescending(p => p.Likes).ToList();
-                return View(userPosts);
-            }
-            else return RedirectToAction("Login");
+                base.OnActionExecuting(filterContext);
+            else
+                filterContext.Result = RedirectToAction("Login", "Welcome");
         }
 
-        public ActionResult UserProfile()
+        public ActionResult Home()
         {
-            int userId = Convert.ToInt32(Session["UserID"]);
+            var allPosts = db.Posts.OrderByDescending(p => p.Likes).ToList();
+            return View(allPosts);
+        }
+
+        public ActionResult UserProfile(int? userId)
+        {
+            if (userId == null || db.Users.Find(userId) == null)
+                userId = GetUserIdFromSession();
+
             var userPosts = db.Posts.Where(p => p.UserId == userId).OrderByDescending(p => p.Likes).ToList();
+
             if (userPosts != null)
                 return View(userPosts);
 
             else return View();
         }
-     
-        
 
-        public ActionResult Register()
+        public ActionResult Edit(int? userId)
         {
-            return View();
-        }
-   
-        public ActionResult Login()
-        {
-            return View();
-        }
+            if (userId == null || db.Users.Find(userId) == null)
+                userId = GetUserIdFromSession();
 
-        public ActionResult Logout()
-        {
-            Session.Clear();
-            return RedirectToAction("Home");
-        }
+            else if (userId != GetUserIdFromSession() && Session["Admin"] == null)
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "Access Denied" });
 
-        [HttpPost]
-        public ActionResult Login(User user)
-        {
-            var loggedUser = db.Users.Where(u => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
-            if (loggedUser != null)
-            {
-                Session["UserID"] = loggedUser.UserID.ToString();
-                Session["Username"] = loggedUser.Email.ToString();
+            User user = db.Users.Find(userId);
 
-                if (loggedUser.IsAdmin)
-                {
-                    Session["Admin"] = "true";
-                }
-
-                if (loggedUser.ImageUrl != null)
-                {
-                    Session["ImageUrl"] = loggedUser.ImageUrl;
-                }
-                else if (loggedUser.Gender == Utils.Utils.MyGender.Male)
-                {
-                    Session["ImageUrl"] = "~/Content/images/male.jpg";
-                }
-                else
-                {
-                     Session["ImageUrl"] = "~/Content/images/female.jpg";
-                }
-
-                Session["Fullname"] = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
-                return RedirectToAction("Home", loggedUser);
-            }
-            else
-            {
-                ModelState.AddModelError("", "Wrong credentials");
-            }
-            return View();
-        }
-
-
-
-        [HttpPost]
-        public ActionResult Register(User account)
-        {
-            // TODO: check what happens on duplicate email
-            if (ModelState.IsValid)
-            {
-                db.Users.Add(account);
-                db.SaveChanges();
-            }
-            ModelState.Clear();
-            ViewBag.Message = account.FirstName + " " + account.LastName + "successfuly registered!";
-
-            return View();
-        }
-
-        // GET: Users/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
             return View(user);
         }
 
-        // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Gender,Email,BirthDate,Password")] User user)
@@ -134,35 +62,15 @@ namespace SocialNetwork.Controllers
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Logout", "Users");
+                return RedirectToAction("Logout", "Welcome");
             }
+
             return View(user);
         }
 
-        // GET: Users/Delete/5
-        public ActionResult Delete(int? id)
+        private int GetUserIdFromSession()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return Convert.ToInt32(Session["UserID"]);
         }
 
         protected override void Dispose(bool disposing)

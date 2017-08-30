@@ -1,0 +1,20 @@
+﻿@model SocialNetwork.Models.User
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2>Are you sure you want to delete this user?</h2>
+<div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> &nbsp;&nbsp;&nbsp;
+            <input type="button" value="No, go back" onclick="@("window.location.href='" + @Url.Action("Home", "Users") + "'");" />
+        </div>
+    }
+</div>

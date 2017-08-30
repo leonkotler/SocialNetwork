@@ -12,115 +12,93 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
-        public ActionResult ControlPanel()
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Session["Admin"] != null)
-            {
-                ViewBag.Address = "Rishon LeTsion, baron hirsch 16";
-                return View();
-            }
+                base.OnActionExecuting(filterContext);
+            else
+                filterContext.Result = RedirectToAction("AccessDenied","Welcome", new { ErrorMessage = "Restricted to administrators only" });
+        }
 
-            
-
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+        public ActionResult ControlPanel()
+        {
+            ViewBag.Address = "Rishon LeTsion, baron hirsch 16";
+            return View();
         }
 
         public ActionResult ManageUsers()
         {
-            if (Session["Admin"] != null)
-            {
-                List<Models.User> users = db.Users.ToList();
-                return View(users);
-            }
-
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+            List<Models.User> users = db.Users.ToList();
+            return View(users);
         }
 
 
         public ActionResult Statistics()
         {
-            if (Session["Admin"] != null)
-            {
-                ViewBag.CommentsPerUser = GetUserComments();
-                ViewBag.LikesPerUser = GetUserLikes();
-                return View();
-            }
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+
+            ViewBag.CommentsPerUser = GetUserComments();
+            ViewBag.LikesPerUser = GetUserLikes();
+            return View();
         }
 
         public ActionResult AdvancedSearch()
         {
-            if (Session["Admin"] != null)
-                return View();
-
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+            return View();
         }
 
         [HttpPost]
         public ActionResult SearchUsers(User user)
         {
-            if (Session["Admin"] != null)
-            {
-                if (user.FirstName == null)
-                    user.FirstName = "";
+            if (user.FirstName == null)
+                user.FirstName = "";
 
-                if (user.LastName == null)
-                    user.LastName = "";
+            if (user.LastName == null)
+                user.LastName = "";
 
-                if (user.Email == null)
-                    user.Email = "";
+            if (user.Email == null)
+                user.Email = "";
 
-                List<User> users = db.Users.Where(u => u.FirstName.Contains(user.FirstName) &&
-                                                      u.LastName.Contains(user.LastName) &&
-                                                      u.Email.Contains(user.Email)).ToList();
+            List<User> users = db.Users.Where(u => u.FirstName.Contains(user.FirstName) &&
+                                                  u.LastName.Contains(user.LastName) &&
+                                                  u.Email.Contains(user.Email)).ToList();
 
-                if (users.Count == 0 || user == null)
-                    return View("NoResults");
+            if (users.Count == 0 || user == null)
+                return View("NoResults");
 
-                return View(users);
-            }
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+            return View(users);
         }
 
         [HttpPost]
         public ActionResult SearchPosts(Post post)
         {
-            if (Session["Admin"] != null)
-            {
-                if (post.Title == null) 
-                    post.Title = "";
+            if (post.Title == null)
+                post.Title = "";
 
-                if (post.Content == null)
-                    post.Content = "";         
+            if (post.Content == null)
+                post.Content = "";
 
-                List<Post> posts = db.Posts.Where(p => p.Content.Contains(post.Content) &&
-                                                      p.Title.Contains(post.Title) &&
-                                                      p.Likes >= post.Likes).ToList();
+            List<Post> posts = db.Posts.Where(p => p.Content.Contains(post.Content) &&
+                                                  p.Title.Contains(post.Title) &&
+                                                  p.Likes >= post.Likes).ToList();
 
-                if (posts.Count == 0 || posts == null)
-                    return View("NoResults");
+            if (posts.Count == 0 || posts == null)
+                return View("NoResults");
 
-                return View(posts);
-            }
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+            return View(posts);
         }
 
         [HttpPost]
         public ActionResult SearchGroups(Group group)
         {
-            if (Session["Admin"] != null)
-            {
-                if (group.Title == null)
-                    group.Title = "";
+            if (group.Title == null)
+                group.Title = "";
 
-                List<Group> groups = db.Groups.Where(g => g.Title.Contains(group.Title)).ToList();
+            List<Group> groups = db.Groups.Where(g => g.Title.Contains(group.Title)).ToList();
 
-                if (groups.Count == 0 || groups == null)
-                    return View("NoResults");
+            if (groups.Count == 0 || groups == null)
+                return View("NoResults");
 
-                return View(groups);
-            }
-            return RedirectToAction("AccessDenied", new { ErrorMessage = "Restricted to administrators only" });
+            return View(groups);
         }
 
         private List<string[]> GetUserComments()
@@ -161,15 +139,6 @@ namespace SocialNetwork.Controllers
 
             return likesList;
         }
-
-        public ActionResult AccessDenied(string ErrorMessage)
-        {
-            if (ErrorMessage != null)
-            {
-                ViewBag.ErrorMessage = ErrorMessage;
-            }
-            return View();
-        }
-
+       
     }
 }

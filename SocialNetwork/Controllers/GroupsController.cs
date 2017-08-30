@@ -15,6 +15,14 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Session["UserID"] != null)
+                base.OnActionExecuting(filterContext);
+            else
+                filterContext.Result = RedirectToAction("Login", "Welcome");
+        }
+
         public ActionResult Index()
         {
             var groups = db.Groups.ToList();
@@ -41,7 +49,6 @@ namespace SocialNetwork.Controllers
             return View(group);
         }
 
-        // GET: Groups/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -56,16 +63,12 @@ namespace SocialNetwork.Controllers
             return View(group);
         }
 
-        // GET: Groups/Create
         public ActionResult Create(int? userId)
         {
             ViewBag.UserId = userId;
             return View();
         }
 
-        // POST: Groups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AdminId,Title")] Group group)
@@ -85,7 +88,6 @@ namespace SocialNetwork.Controllers
             return View(group);
         }
 
-        // GET: Groups/Edit/5
         public ActionResult Edit(int? groupId)
         {
             if (groupId == null)
@@ -115,9 +117,6 @@ namespace SocialNetwork.Controllers
             return RedirectToAction("ViewGroup", new { groupId = groupId });
         }
 
-        // POST: Groups/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "GroupID,AdminId,Title,CreatedDate,Likes")] Group group)
@@ -131,7 +130,6 @@ namespace SocialNetwork.Controllers
             return View(group);
         }
 
-        // GET: Groups/Delete/5
         public ActionResult Delete(int? groupId)
         {
             if (groupId == null)
@@ -146,14 +144,11 @@ namespace SocialNetwork.Controllers
             return View(group);
         }
 
-        // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int groupId)
         {
             Group group = db.Groups.Find(groupId);
-
-
 
             if (group.Posts != null)
             {
@@ -213,7 +208,6 @@ namespace SocialNetwork.Controllers
                 {
                     groupAdminNames.Add(group.AdminId, userName);
                 }
-
             }
 
             return groupAdminNames;

@@ -59,8 +59,5 @@
     <header class="major">
         <h2>@Session["Fullname"]'s Profile</h2>
     </header>
-    <hr />
-    <br />
-    <input type="button" value="Edit details" onclick="@("window.location.href='" + @Url.Action("Edit", "Users",new { id = Session["UserId"] }) + "'");" />
-
+    <input type="button" value="Edit details" onclick="@("window.location.href='" + @Url.Action("Edit", "Users",new { id = Session["UserId"] },null) + "'");" />
 }

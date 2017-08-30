@@ -15,15 +15,20 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
- 
-        // GET: Comments/Create
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Session["UserID"] != null)
+                base.OnActionExecuting(filterContext);
+            else
+                filterContext.Result = RedirectToAction("Login", "Welcome");
+        }
+
         public ActionResult Create(int? postId)
         {    
             ViewBag.postId = postId;
             return View();
         }
-
-        // POST: Comments/Create      
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create ([Bind(Include = "Content,PostId")] Comment comment)
@@ -51,7 +56,6 @@ namespace SocialNetwork.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -66,9 +70,6 @@ namespace SocialNetwork.Controllers
             return View(comment);
         }
 
-        // POST: Comments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CommentID,PostID,UserID,Title,Content,Likes")] Comment comment)
@@ -82,7 +83,6 @@ namespace SocialNetwork.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -97,7 +97,6 @@ namespace SocialNetwork.Controllers
             return View(comment);
         }
 
-        // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

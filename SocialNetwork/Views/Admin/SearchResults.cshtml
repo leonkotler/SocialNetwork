@@ -1,0 +1,22 @@
+﻿@model object;
+@{
+    ViewBag.Title = "SearchResults";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+
+
+    if (ViewBag.Type == "users")
+    {
+        List<SocialNetwork.Models.User> users = ViewBag.List;
+    }
+    if (ViewBag.Type == "posts")
+    {
+        List<SocialNetwork.Models.Post> posts = ViewBag.List;
+    }
+    if (ViewBag.Type == "groups")
+    {
+        List<SocialNetwork.Models.Group> groups = ViewBag.List;
+    }
+}
+
+<h2>SearchResults</h2>
+

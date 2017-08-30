@@ -155,6 +155,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -177,7 +178,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\Users\Home.cshtml" />
-    <Content Include="Views\Users\Login.cshtml" />
+    <Content Include="Views\Welcome\Login.cshtml" />
     <Content Include="Views\Comments\Create.cshtml" />
     <Content Include="Views\Users\UserProfile.cshtml" />
     <Content Include="Views\Groups\ViewGroup.cshtml" />
@@ -188,7 +189,7 @@
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Groups\Edit.cshtml" />
     <Content Include="Views\Groups\Delete.cshtml" />
-    <Content Include="Views\Admin\AccessDenied.cshtml" />
+    <Content Include="Views\Welcome\AccessDenied.cshtml" />
     <Content Include="Views\Admin\ControlPanel.cshtml" />
     <Content Include="Views\Admin\ManageUsers.cshtml" />
     <Content Include="Views\Admin\Statistics.cshtml" />
@@ -197,6 +198,8 @@
     <Content Include="Views\Admin\NoResults.cshtml" />
     <Content Include="Views\Admin\SearchPosts.cshtml" />
     <Content Include="Views\Admin\SearchGroups.cshtml" />
+    <Content Include="Views\Welcome\Register.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

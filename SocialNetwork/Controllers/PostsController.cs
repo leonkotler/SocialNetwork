@@ -15,25 +15,12 @@ namespace SocialNetwork.Controllers
     {
         private NetworkContext db = new NetworkContext();
 
-        // GET: Posts
-        public ActionResult Index()
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            return View(db.Posts.ToList());
-        }
-
-        // GET: Posts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = db.Posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
+            if (Session["UserID"] != null)
+                base.OnActionExecuting(filterContext);
+            else
+                filterContext.Result = RedirectToAction("Login", "Welcome");
         }
 
         // GET: Posts/Create
@@ -54,7 +41,6 @@ namespace SocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "GroupId,Title,Content")] Post post)
         {
-
             if (ModelState.IsValid)
             {
                 User user = db.Users.Find(Convert.ToInt32(Session["UserID"]));
@@ -82,13 +68,13 @@ namespace SocialNetwork.Controllers
             return View(post);
         }
 
-        // GET: Posts/Edit/5
         public ActionResult Edit(int? postId)
         {
             if (postId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Post post = db.Posts.Find(postId);
             if (post == null)
             {
@@ -97,9 +83,6 @@ namespace SocialNetwork.Controllers
             return View(post);
         }
 
-        // POST: Posts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "GroupId,PostID,UserId,Title,Content,PostDate,Likes")] Post post)                                                 
@@ -113,7 +96,6 @@ namespace SocialNetwork.Controllers
             return View(post);
         }
 
-        // GET: Posts/Delete/5
         public ActionResult Delete(int? postId)
         {
             if (postId == null)
@@ -128,7 +110,6 @@ namespace SocialNetwork.Controllers
             return View(post);
         }
 
-        // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int postId)

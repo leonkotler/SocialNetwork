@@ -107,6 +107,28 @@ namespace SocialNetwork.Controllers
             return RedirectToAction("Index");
         }
 
+        private bool IsAuthorizedToEdit(int id)
+        {
+            Comment comment = db.Comments.Find(id);
+
+            if (comment.User.UserID == GetUserIdFromSession())
+                return true;
+            else if (isAdmin())
+                return true;
+
+            return false;
+        }
+
+        private int GetUserIdFromSession()
+        {
+            return Convert.ToInt32(Session["UserID"]);
+        }
+
+        private bool isAdmin()
+        {
+            return Session["Admin"] != null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -45,6 +45,10 @@ namespace SocialNetwork.Models
         [ScaffoldColumn(false)]
         public bool IsAdmin { get; set; }
 
+        [Display(Name = "Address")]
+        [DataType(DataType.Text)]
+        public string Address { get; set; }
+
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
     }

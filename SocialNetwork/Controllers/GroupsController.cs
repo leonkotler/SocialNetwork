@@ -188,6 +188,28 @@ namespace SocialNetwork.Controllers
 
         }
 
+        private bool IsAuthorizedToEdit(int id)
+        {
+            Group group = db.Groups.Find(id);
+
+            if (group.AdminId == GetUserIdFromSession())
+                return true;
+            else if (isAdmin())
+                return true;
+
+            return false;
+        }
+
+        private int GetUserIdFromSession()
+        {
+            return Convert.ToInt32(Session["UserID"]);
+        }
+
+        private bool isAdmin()
+        {
+            return Session["Admin"] != null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

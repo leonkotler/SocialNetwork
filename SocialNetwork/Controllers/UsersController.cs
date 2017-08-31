@@ -56,7 +56,7 @@ namespace SocialNetwork.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Gender,Email,BirthDate,Password")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Gender,Email,BirthDate,Password,Address")] User user)
         {
             if (ModelState.IsValid)
             {

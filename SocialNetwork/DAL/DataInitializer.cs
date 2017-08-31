@@ -18,10 +18,24 @@ namespace SocialNetwork.DAL
             string nezerAvatar = "https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/2/005/03d/277/01fedf9.jpg";
 
 
-            User user1 = new User { UserID=1, IsAdmin = true, FirstName = "Eliahu", LastName = "Khalastchi",Password="123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2017-08-09"), Email = "eli@colman.co.il" , ImageUrl=eliAvatar};
-            User user2 = new User { UserID=2, FirstName = "Oren", LastName = "Kapach",Password="123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2015-08-09"), Email = "oren@colman.co.il", ImageUrl = orenAvatar };
-            User user3 = new User { UserID=3, FirstName = "Nezer", LastName = "Zaidenberg", Password = "123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2016-08-09"), Email = "nezer@colman.co.il", ImageUrl = nezerAvatar };
-            User user4 = new User { UserID=4, IsAdmin=true ,FirstName = "Igor", LastName = "Rochlin", Password = "123", Gender = MyGender.Male, BirthDate = DateTime.Parse("2014-08-09"), Email = "igor@colman.co.il", ImageUrl = igorAvatar };
+            User user1 = new User { UserID=1, IsAdmin = true, FirstName = "Eliahu", LastName = "Khalastchi",Password="123",
+                Gender = MyGender.Male, BirthDate = DateTime.Parse("2017-08-09"), Email = "eli@colman.co.il" , ImageUrl=eliAvatar,
+                Address = "Hertzel 2, Rishon Le Zion"};
+
+            User user2 = new User { UserID=2, FirstName = "Oren", LastName = "Kapach",Password="123",
+                Gender = MyGender.Male, BirthDate = DateTime.Parse("2015-08-09"), Email = "oren@colman.co.il", ImageUrl = orenAvatar,
+                Address = "Hertzel 2, Tel Aviv"
+            };
+
+            User user3 = new User { UserID=3, FirstName = "Nezer", LastName = "Zaidenberg", Password = "123",
+                Gender = MyGender.Male, BirthDate = DateTime.Parse("2016-08-09"), Email = "nezer@colman.co.il", ImageUrl = nezerAvatar,
+                Address = "Hertzel 2, Rehovot"
+            };
+
+            User user4 = new User { UserID=4, IsAdmin=true ,FirstName = "Igor", LastName = "Rochlin", Password = "123",
+                Gender = MyGender.Male, BirthDate = DateTime.Parse("2014-08-09"), Email = "igor@colman.co.il", ImageUrl = igorAvatar,
+                Address = "Hertzel 2, Ashdod"
+            };
 
             var users = new List<User>();
 

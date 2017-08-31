@@ -34,9 +34,7 @@ namespace SocialNetwork.Controllers
             return View();
         }
 
-        // POST: Posts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "GroupId,Title,Content")] Post post)
@@ -139,6 +137,28 @@ namespace SocialNetwork.Controllers
             db.SaveChanges();
             return post.Likes;
 
+        }
+
+        private bool IsAuthorizedToEdit(int id)
+        {
+            Post post = db.Posts.Find(id);
+
+            if (post.User.UserID == GetUserIdFromSession())
+                return true;
+            else if (isAdmin())
+                return true;
+
+            return false;
+        }
+
+        private int GetUserIdFromSession()
+        {
+            return Convert.ToInt32(Session["UserID"]);
+        }
+
+        private bool isAdmin()
+        {
+            return Session["Admin"] != null;
         }
 
         protected override void Dispose(bool disposing)

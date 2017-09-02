@@ -22,7 +22,8 @@ namespace SocialNetwork.Controllers
 
         public ActionResult ControlPanel()
         {
-            ViewBag.Address = "Rishon LeTsion, baron hirsch 16";
+            User user = db.Users.Find(Convert.ToInt32(Session["UserID"]));
+            ViewBag.Address = user.Address;
             return View();
         }
 

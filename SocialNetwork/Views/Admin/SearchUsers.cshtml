@@ -45,7 +45,10 @@
                     @Html.DisplayFor(modelItem => item.BirthDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", "Users", new { userId = item.UserID }, null)
+                    @if (!item.IsAdmin)
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Users", new { userId = item.UserID }, null)
+                    }
                 </td>
             </tr>
         }

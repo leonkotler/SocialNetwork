@@ -62,7 +62,9 @@ namespace SocialNetwork.Controllers
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Logout", "Welcome");
+                if (Session["Admin"]==null)
+                    return RedirectToAction("Logout", "Welcome");
+                else return RedirectToAction("ManageUsers", "Admin");
             }
 
             return View(user);

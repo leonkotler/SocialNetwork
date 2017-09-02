@@ -127,6 +127,7 @@
     <Content Include="Content\images\thumbs\04.jpg" />
     <Content Include="Content\images\thumbs\05.jpg" />
     <Content Include="Content\images\thumbs\06.jpg" />
+    <Content Include="Content\videos\sn_video.mp4" />
     <Content Include="Global.asax" />
     <Content Include="Content\assets\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\assets\fonts\fontawesome-webfont.ttf" />
@@ -139,6 +140,7 @@
     <Content Include="Content\assets\sass\libs\_vars.scss" />
     <Content Include="Content\assets\sass\ie8.scss" />
     <Content Include="Content\assets\sass\main.scss" />
+    <Content Include="Content\videos\sn_video.webm" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

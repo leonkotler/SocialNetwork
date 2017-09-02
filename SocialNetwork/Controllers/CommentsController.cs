@@ -33,7 +33,7 @@ namespace SocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create ([Bind(Include = "Content,PostId")] Comment comment)
         {
-            User user = db.Users.Find(Convert.ToInt32(Session["UserID"]));
+            User user = db.Users.Find(GetUserIdFromSession());
             Post post = db.Posts.Find(comment.PostId);
 
             if (ModelState.IsValid)
@@ -67,6 +67,10 @@ namespace SocialNetwork.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (!IsAuthorizedToEdit(comment.CommentID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             return View(comment);
         }
 
@@ -74,6 +78,9 @@ namespace SocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CommentID,PostID,UserID,Title,Content,Likes")] Comment comment)
         {
+            if (!IsAuthorizedToEdit(comment.CommentID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             if (ModelState.IsValid)
             {
                 db.Entry(comment).State = EntityState.Modified;
@@ -94,6 +101,11 @@ namespace SocialNetwork.Controllers
             {
                 return HttpNotFound();
             }
+
+
+            if (!IsAuthorizedToEdit(comment.CommentID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             return View(comment);
         }
 
@@ -109,7 +121,7 @@ namespace SocialNetwork.Controllers
 
         private bool IsAuthorizedToEdit(int id)
         {
-            Comment comment = db.Comments.Find(id);
+            Comment comment = db.Comments.AsNoTracking().Where(c => c.CommentID == id).FirstOrDefault();
 
             if (comment.User.UserID == GetUserIdFromSession())
                 return true;

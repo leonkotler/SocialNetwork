@@ -68,16 +68,21 @@ namespace SocialNetwork.Controllers
 
         public ActionResult Edit(int? postId)
         {
+
             if (postId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             Post post = db.Posts.Find(postId);
+
             if (post == null)
             {
                 return HttpNotFound();
             }
+
+            if (!IsAuthorizedToEdit(post.PostID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             return View(post);
         }
 
@@ -85,9 +90,14 @@ namespace SocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "GroupId,PostID,UserId,Title,Content,PostDate,Likes")] Post post)                                                 
         {
+            if(!IsAuthorizedToEdit(post.PostID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
+                db.Entry(post).State = post.PostID == 0 ?
+                                   EntityState.Added :
+                                   EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Home","Users");
             }
@@ -101,10 +111,15 @@ namespace SocialNetwork.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Post post = db.Posts.Find(postId);
+
             if (post == null)
             {
                 return HttpNotFound();
             }
+
+            if (!IsAuthorizedToEdit(post.PostID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             return View(post);
         }
 
@@ -113,6 +128,10 @@ namespace SocialNetwork.Controllers
         public ActionResult DeleteConfirmed(int postId)
         {
             Post post = db.Posts.Find(postId);
+
+            if (!IsAuthorizedToEdit(post.PostID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             if (post.Comments != null)
             {
                 db.Comments.RemoveRange(post.Comments);
@@ -141,7 +160,7 @@ namespace SocialNetwork.Controllers
 
         private bool IsAuthorizedToEdit(int id)
         {
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.AsNoTracking().Where(p => p.PostID == id).FirstOrDefault();
 
             if (post.User.UserID == GetUserIdFromSession())
                 return true;

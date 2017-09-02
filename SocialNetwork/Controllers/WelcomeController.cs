@@ -55,6 +55,12 @@ namespace SocialNetwork.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (EmailAlreadyTaken(user.Email))
+                {
+                    ViewBag.ErrorMsg = "Email already taken";
+                    return View(user);
+                }
+
                 user.IsAdmin = false;
                 db.Users.Add(user);
                 db.SaveChanges();
@@ -62,6 +68,13 @@ namespace SocialNetwork.Controllers
             }
 
             return View(user);
+        }
+
+        private bool EmailAlreadyTaken(string email)
+        {
+            User user = db.Users.AsNoTracking().Where(u => u.Email == email).FirstOrDefault();
+
+            return (user != null);
         }
 
         public ActionResult AccessDenied(string ErrorMessage)

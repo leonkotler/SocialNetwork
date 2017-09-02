@@ -45,6 +45,7 @@ namespace SocialNetwork.Models
         [ScaffoldColumn(false)]
         public bool IsAdmin { get; set; }
 
+        [Required(ErrorMessage = "Address is required")]
         [Display(Name = "Address")]
         [DataType(DataType.Text)]
         public string Address { get; set; }

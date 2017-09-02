@@ -5,15 +5,12 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h2>Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Group</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.GroupID)
         @Html.HiddenFor(model => model.AdminId)
@@ -36,6 +33,11 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to user groups", "UserGroups")
-</div>
+@section Header{
+    <header class="major">
+        <h2>
+            Edit group
+        </h2>
+    </header>
+    <input type="button" value="Back to your groups" onclick="@("window.location.href='" + @Url.Action("UserGroups", "Groups") + "'");" />
+}

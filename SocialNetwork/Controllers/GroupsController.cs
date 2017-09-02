@@ -27,13 +27,13 @@ namespace SocialNetwork.Controllers
         {
             var groups = db.Groups.ToList();
             ViewBag.Admins = adminMapper(groups);
-            ViewBag.User = db.Users.Find(Convert.ToInt32(Session["UserID"]));
+            ViewBag.User = db.Users.Find(GetUserIdFromSession());
             return View(groups);
         }
 
         public ActionResult UserGroups()
         {
-            int userId = Convert.ToInt32(Session["UserID"]);
+            int userId = GetUserIdFromSession();
             User user = db.Users.Find(userId);
             ViewBag.User = user;
 
@@ -46,20 +46,6 @@ namespace SocialNetwork.Controllers
         public ActionResult ViewGroup(int? groupId)
         {
             Group group = db.Groups.Find(groupId);
-            return View(group);
-        }
-
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Group group = db.Groups.Find(id);
-            if (group == null)
-            {
-                return HttpNotFound();
-            }
             return View(group);
         }
 
@@ -99,6 +85,10 @@ namespace SocialNetwork.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (!IsAuthorizedToEdit(group.GroupID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             return View(group);
         }
 
@@ -121,6 +111,9 @@ namespace SocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "GroupID,AdminId,Title,CreatedDate,Likes")] Group group)
         {
+            if (!IsAuthorizedToEdit(group.GroupID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             if (ModelState.IsValid)
             {
                 db.Entry(group).State = EntityState.Modified;
@@ -136,11 +129,17 @@ namespace SocialNetwork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Group group = db.Groups.Find(groupId);
+
             if (group == null)
             {
                 return HttpNotFound();
             }
+
+            if (!IsAuthorizedToEdit(group.GroupID))
+                return RedirectToAction("AccessDenied", "Welcome", new { ErrorMessage = "You are not authorized to edit this post" });
+
             return View(group);
         }
 
@@ -190,7 +189,7 @@ namespace SocialNetwork.Controllers
 
         private bool IsAuthorizedToEdit(int id)
         {
-            Group group = db.Groups.Find(id);
+            Group group = db.Groups.AsNoTracking().Where(g => g.GroupID == id).FirstOrDefault();
 
             if (group.AdminId == GetUserIdFromSession())
                 return true;
